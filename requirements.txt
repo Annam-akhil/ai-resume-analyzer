@@ -1,17 +1,13 @@
-pdfplumber==0.11.1
+streamlit==1.36.0
+pypdf
+pdfminer.six
+
 langchain==0.2.5
 langchain-community==0.2.5
 langchain-core==0.2.9
 
-
-opencv-python-headless
 pandas
-pypdf
-pdf2image
-pytesseract
-scikit-learn
-streamlit==1.36.0
-streamlit-feedback==0.1.3
-
-tqdm
 numpy
+scikit-learn
+tqdm
+streamlit-feedback
