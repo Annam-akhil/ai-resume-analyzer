@@ -1,4 +1,4 @@
-# AI Resume Analyzer 🚀
+# AI Resume Analyzer 
 
 An AI-powered application that analyzes resumes and provides ATS optimization suggestions using Natural Language Processing (NLP) and Machine Learning.
 The tool compares resumes with job descriptions, identifies skill gaps, and suggests improvements to increase the chances of passing Applicant Tracking Systems (ATS).
