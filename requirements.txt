@@ -1,12 +1,10 @@
-streamlit==1.32.2
-pillow==10.2.0
-
+streamlit
 pypdf
 pdfminer.six
 
-langchain==0.2.5
-langchain-community==0.2.5
-langchain-core==0.2.9
+langchain
+langchain-community
+langchain-core
 
 pandas
 numpy
