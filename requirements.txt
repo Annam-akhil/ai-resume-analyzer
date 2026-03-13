@@ -1,4 +1,6 @@
-streamlit==1.36.0
+streamlit==1.32.2
+pillow==10.2.0
+
 pypdf
 pdfminer.six
 
@@ -10,4 +12,5 @@ pandas
 numpy
 scikit-learn
 tqdm
+
 streamlit-feedback
