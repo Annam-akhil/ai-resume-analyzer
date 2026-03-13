@@ -5,6 +5,7 @@ pdfminer.six
 langchain
 langchain-community
 langchain-core
+sentence-transformers
 
 pandas
 numpy
