@@ -1,4 +1,8 @@
-# AI Resume Analyzer 🚀
+# AI Resume Analyzer 
+
+## Demo
+
+Live Demo: Coming Soon (Streamlit Cloud Deployment)
 
 An AI-powered application that analyzes resumes and provides ATS optimization suggestions using NLP and machine learning.
 
