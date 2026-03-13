@@ -12,4 +12,5 @@ numpy
 scikit-learn
 tqdm
 
+plotly
 streamlit-feedback
