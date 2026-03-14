@@ -5,7 +5,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 from transformers import pipeline
 from pypdf import PdfReader
-import pickle
 import plotly.graph_objects as go
 import plotly.express as px
 
@@ -37,11 +36,31 @@ def load_models():
 embedding_model, suggestion_model = load_models()
 
 # ----------------------------------
-# LOAD JD EMBEDDINGS
+# SAMPLE JOB DESCRIPTIONS
 # ----------------------------------
 
-with open("output/jd_embeddings_large.pkl", "rb") as f:
-    jd_embeddings = pickle.load(f)
+job_roles = {
+    "Data Scientist":
+        "Python machine learning deep learning NLP pandas numpy scikit-learn data analysis",
+
+    "Machine Learning Engineer":
+        "Python machine learning deep learning pytorch tensorflow model deployment docker",
+
+    "AI Engineer":
+        "Python NLP transformers huggingface deep learning LLMs AI systems",
+
+    "Backend Developer":
+        "Python Flask API development SQL docker cloud backend systems",
+
+    "Frontend Developer":
+        "React javascript html css frontend web development"
+}
+
+# Generate job embeddings dynamically
+jd_embeddings = {}
+
+for job, description in job_roles.items():
+    jd_embeddings[job] = embedding_model.encode(description)
 
 # ----------------------------------
 # SKILLS LIST
@@ -138,6 +157,7 @@ if uploaded_file:
             st.success(f"Match Score: {jd_score}% (Strong Match)")
 
         st.progress(float(jd_score) / 100)
+
     # ----------------------------------
     # JOB MATCHING
     # ----------------------------------
@@ -248,21 +268,6 @@ if uploaded_file:
     st.write(missing_skills[:10])
 
     # ----------------------------------
-    # SKILL ANALYSIS CHART
-    # ----------------------------------
-
-    st.subheader("📊 Skill Analysis Chart")
-
-    skill_data = {
-        "Category":["Detected Skills","Missing Skills"],
-        "Count":[len(detected_skills), len(missing_skills)]
-    }
-
-    chart_df = pd.DataFrame(skill_data)
-
-    st.bar_chart(chart_df.set_index("Category"))
-
-    # ----------------------------------
     # TOP MATCHING JOBS
     # ----------------------------------
 
@@ -275,18 +280,6 @@ if uploaded_file:
     st.dataframe(df)
 
     # ----------------------------------
-    # MATCH VISUALIZATION
-    # ----------------------------------
-
-    for job, score in scores[:5]:
-
-        st.write(job)
-
-        st.progress(float(score))
-
-        st.write(f"{round(score*100,2)} % match")
-
-    # ----------------------------------
     # AI SUGGESTIONS
     # ----------------------------------
 
@@ -297,59 +290,8 @@ if uploaded_file:
 
     Resume:
     {resume_text}
-
-    Provide:
-    - Resume improvement suggestions
-    - Missing technical skills
-    - Formatting improvements
     """
 
-    suggestions = suggestion_model(prompt, max_length=250)
+    suggestions = suggestion_model(prompt, max_length=200)
 
     st.write(suggestions[0]["generated_text"])
-
-    # ----------------------------------
-    # AI RESUME REWRITER
-    # ----------------------------------
-
-    st.subheader("✍ AI Resume Rewriter")
-
-    if st.button("Improve My Resume"):
-
-        rewrite_prompt = f"""
-        Rewrite the following resume to make it more professional,
-        ATS optimized and impactful.
-
-        Resume:
-        {resume_text}
-        """
-
-        improved_resume = suggestion_model(rewrite_prompt, max_length=400)
-
-        st.subheader("🚀 Improved Resume Version")
-
-        st.write(improved_resume[0]["generated_text"])
-
-    # ----------------------------------
-    # CHATBOT
-    # ----------------------------------
-
-    st.subheader("🤖 Resume AI Assistant")
-
-    user_question = st.text_input("Ask anything about your resume")
-
-    if user_question:
-
-        chat_prompt = f"""
-        Resume:
-        {resume_text}
-
-        User Question:
-        {user_question}
-
-        Provide a helpful answer.
-        """
-
-        answer = suggestion_model(chat_prompt, max_length=200)
-
-        st.write(answer[0]["generated_text"])
